@@ -4,13 +4,12 @@ import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class DirectoryUtils {
 
 
-    public static boolean ifDirNotExistentCreate(Path dirPath) throws IOException {
+    public static boolean ifDirNotExistentCreateElseOk(Path dirPath) throws IOException {
         if (Files.notExists(dirPath)) {
             try {
                 Files.createDirectory(dirPath);
@@ -35,7 +34,7 @@ public class DirectoryUtils {
                 }
             } catch (DirectoryNotEmptyException e) {
                 try (Stream<Path> entries = Files.list(dirPath)) {
-                    if (!entries.toList().contains(Path.of("tmp"))) {
+                    if (!entries.toList().contains(Path.of(dirPath + "/tmp"))) {
                         throw new IOException("Error: Selected directory not empty!");
                     }
                     return true;
