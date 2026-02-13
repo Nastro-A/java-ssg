@@ -1,9 +1,12 @@
 package com.ssg.ssg.utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class DirectoryUtils {
@@ -55,5 +58,25 @@ public class DirectoryUtils {
         }
         System.out.println("Directory at " + dirPath + " created.");
         return true;
+    }
+
+    public static ArrayList<File> dirListFiles(Path dirPath){
+        if (Files.exists(dirPath) && Files.isDirectory(dirPath)){
+            // Iterate on the directory to extract the Files
+            var list = new ArrayList<File>();
+            try (var streamFiles = Files.list(dirPath)) {
+                var filesPath = streamFiles.toList();
+                for (var filePath : filesPath) {
+                    if (!filePath.getFileName().endsWith("index.html") || !filePath.startsWith(".")){
+                        list.addLast(filePath.toFile());
+                    }
+                }
+                return list;
+            } catch (IOException e){
+                System.out.println("Error: " + dirPath + " not accessible!");
+                System.exit(1);
+            }
+        }
+        return new ArrayList<>();
     }
 }

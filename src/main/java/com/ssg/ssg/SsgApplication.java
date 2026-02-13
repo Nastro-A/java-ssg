@@ -9,11 +9,14 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 import static com.ssg.ssg.utils.DirectoryUtils.ifDirNotExistentCreateElseOk;
+import static com.ssg.ssg.utils.IndexHtml.createIndex;
 
 @SpringBootApplication
 public class SsgApplication {
     private static Path mdDir;
     private static Path htmlDir;
+    public static String picoTheme;
+    public static String siteTitle;
     static void main(String[] args) throws Exception {
         Properties props = new Properties();
         try (InputStream input = SsgApplication.class.getClassLoader().getResourceAsStream("application.properties")) {
@@ -21,6 +24,8 @@ public class SsgApplication {
                 props.load(input);
                 String mdDirStr = props.getProperty("com.ssg.mddir");
                 String htmlDirStr = props.getProperty("com.ssg.htmldir");
+                String picoThemeStr = props.getProperty("com.ssg.pico.theme");
+                String siteTitleStr = props.getProperty("com.ssg.site.title");
                 if (mdDirStr == null) {
                     throw new Exception("com.ssg.mddir not set in application.properties");
                 }
@@ -29,6 +34,11 @@ public class SsgApplication {
                     throw new Exception("com.ssg.htmldir not set in application.properties");
                 }
                 htmlDir = Path.of(htmlDirStr);
+                if (picoThemeStr == null) {
+                    throw new Exception("com.ssg.htmldir not set in application.properties");
+                }
+                picoTheme = picoThemeStr.toLowerCase();
+                siteTitle = siteTitleStr;
             }
         } catch (IOException e) {
             System.out.println("application.properties file not exists");
@@ -38,6 +48,7 @@ public class SsgApplication {
             System.exit(1);
         }
         if (ifDirNotExistentCreateElseOk(mdDir) && ifDirNotExistentCreateElseOk(htmlDir)) {
+            createIndex(htmlDir, siteTitle, picoTheme);
             SpringApplication.run(SsgApplication.class, args);
         }
     }
