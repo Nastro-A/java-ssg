@@ -64,8 +64,8 @@ public class SsgApplication {
                     System.out.println("Info: Reconverting all MD files into HTML.");
                 }
                 convertAllIntoHtmlFiles(mdDir, htmlDir, siteTitle, picoTheme);
-                createIndex(htmlDir, siteTitle, picoTheme);
             }
+            createIndex(htmlDir, siteTitle, picoTheme);
             SpringApplication.run(SsgApplication.class, args);
         }
     }

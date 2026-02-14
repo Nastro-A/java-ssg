@@ -29,13 +29,13 @@ public class FileUtils {
             if (file.getName().endsWith(".html") && !file.isDirectory()) {
                 var index = file.getName().indexOf(".");
                 var label = file.getName().substring(0, index);
-                return new HtmlFile(file.getCanonicalPath(), label, Files.getLastModifiedTime(Path.of(file.getCanonicalPath())).toInstant().atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ISO_LOCAL_DATE));
+                return new HtmlFile(file.getCanonicalPath(), label + ".html", label, Files.getLastModifiedTime(Path.of(file.getCanonicalPath())).toInstant().atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ISO_LOCAL_DATE));
             }
         } catch (IOException e) {
             System.out.println("Error: " + file.getPath() + " not accessible!");
             System.exit(1);
         }
-        return new HtmlFile("", "", "");
+        return new HtmlFile("", "", "", "");
     }
 
     public static ArrayList<MdFile> createMdFilesList(ArrayList<File> files) {
@@ -62,7 +62,7 @@ public class FileUtils {
         var linksList = new ArrayList<String>();
         for (HtmlFile file : list) {
             if (!file.filePath().endsWith("index.html")) {
-                linksList.addLast("<li><a href=\"" + file.filePath() + "\">" + file.label() + "</a> - " + file.date() + "</li>");
+                linksList.addLast("<li><a href=\"" + file.link() + "\">" + file.label() + "</a> - " + file.date() + "</li>");
             }
         }
         return linksList;

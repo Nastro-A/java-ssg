@@ -50,7 +50,7 @@ public class ConversionUtils {
                                 </strong></li>
                                                 </ul>
                                             <ul>
-                                                <li><a href="index.html">Home</a></li>
+                                                <li><a href="/">Home</a></li>
                                             </ul>
                                         </nav>
                                     </header>
