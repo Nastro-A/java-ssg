@@ -6,13 +6,12 @@ import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class DirectoryUtils {
 
 
-    public static boolean ifDirNotExistentCreateElseOk(Path dirPath) throws IOException {
+    public static boolean ifDirNotExistentCreate(Path dirPath) throws IOException {
         if (Files.notExists(dirPath)) {
             try {
                 Files.createDirectory(dirPath);
@@ -56,7 +55,7 @@ public class DirectoryUtils {
         } catch (IOException e) {
             throw new IOException("Error creating " + dirPath + " directory!");
         }
-        System.out.println("Directory at " + dirPath + " created.");
+        System.out.println("Info: Directory at " + dirPath + " created.");
         return true;
     }
 
@@ -67,9 +66,7 @@ public class DirectoryUtils {
             try (var streamFiles = Files.list(dirPath)) {
                 var filesPath = streamFiles.toList();
                 for (var filePath : filesPath) {
-                    if (!filePath.getFileName().endsWith("index.html") || !filePath.startsWith(".")){
                         list.addLast(filePath.toFile());
-                    }
                 }
                 return list;
             } catch (IOException e){
