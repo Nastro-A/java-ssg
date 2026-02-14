@@ -11,7 +11,7 @@ JDK 25
 Image docker.io/nastroa/java-ssg
 
 Docker folder contains:
- - Dockerfile -> to use it build the Java app, take the jar file in the target folder and paste it in the Docker directory of the project
+ - Dockerfile -> build the Java app, take the jar file in the target folder and the application.properties in src/main/resources, paste it in the Docker directory of the project and build
  - docker-compose.yaml
 ```shell
 docker compose run -d
