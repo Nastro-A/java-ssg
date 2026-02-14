@@ -1,0 +1,13 @@
+services:
+  java-ssg:
+    image: nastroa/java-ssg
+    restart: on-failure
+    environment:
+      - "SITE_TITLE=User's Blog"
+      - "PICO_THEME=Cyan"
+      - "RELOAD=false" #set to true if you want to reconvert all md files in html
+    ports:
+      - "3600:3000"
+    volumes:
+      - /path/to/html:/opt/app/html
+      - /path/to/markdown:/opt/app/markdown

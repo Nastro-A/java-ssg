@@ -1,0 +1,4 @@
+[Pod]
+Network=java-ssg.network
+PodName=java-ssg
+PublishPort=3600:3000

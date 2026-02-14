@@ -1,0 +1,24 @@
+[Unit]
+Description=Java SSG container
+
+[Container]
+Pod=java-ssg.pod
+ContainerName=ssg
+Image=docker.io/nastroa/java-ssg:latest
+AutoUpdate=registry
+
+HealthCmd=curl http://127.0.0.1:3000
+
+Environment=SITE_TITLE=User's Blog
+Environment=PICO_THEME=Cyan
+Environment=RELOAD=false #set to true if you want to reconvert all md files in html
+
+Volume=/path/to/html:/opt/app/html
+Volume=/path/to/markdown:/opt/app/markdown
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target
