@@ -4,11 +4,8 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.util.Calendar;
 
 import static com.ssg.ssg.utils.DirectoryUtils.dirListFiles;
 import static com.ssg.ssg.utils.FileUtils.createMdFilesList;
@@ -38,6 +35,19 @@ public class ConversionUtils {
                                         rel="stylesheet"
                                 """ + "href=\"https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico." + theme + ".min.css\"" + """
                                 />
+                                <style>
+                                    @media (min-width: 768px) {
+                                  .container {
+                                    padding: 40px;  /* Horizontal centering for block elements */
+                                  }
+                                }
+                                @media (min-width: 1024px) {
+                                  .container {
+                                    max-width: 960px;
+                                    margin: 0 auto;
+                                  }
+                                }
+                                </style>
                                 <title>
                                 """ + title + """
                                 </title>
@@ -54,8 +64,9 @@ public class ConversionUtils {
                                             </ul>
                                         </nav>
                                     </header>
+                                    </header>
                                 <body>
-                                <main style="padding: 1rem;">
+                                <main class="container" style="padding: 1rem;">
                                 """
                         , StandardOpenOption.APPEND);
             }
