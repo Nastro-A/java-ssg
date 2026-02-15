@@ -27,9 +27,9 @@ public class SsgApplication {
                 props.load(input);
                 String mdDirStr = props.getProperty("com.ssg.mddir");
                 String htmlDirStr = props.getProperty("com.ssg.htmldir");
-                String picoThemeStr = props.getProperty("com.ssg.pico.theme");
-                String siteTitleStr = props.getProperty("com.ssg.site.title");
-                String reloadAllFilesStr = props.getProperty("com.ssg.reload");
+                String picoThemeStr = System.getenv("PICO_THEME");
+                String siteTitleStr = System.getenv("SITE_TITLE");
+                String reloadAllFilesStr = System.getenv("RELOAD");
                 if (mdDirStr == null) {
                     throw new Exception("com.ssg.mddir not set in application.properties");
                 }
@@ -41,19 +41,19 @@ public class SsgApplication {
                 System.out.println("INFO: htmlDir:" + htmlDir);
                 htmlDir = Path.of(htmlDirStr);
                 if (picoThemeStr == null) {
-                    throw new Exception("com.ssg.htmldir not set in application.properties");
+                    throw new Exception("PICO_THEME not set in ENVIRONMENT");
                 }
-                System.out.println("INFO: picoTheme:" + picoTheme);
+                System.out.println("INFO: PICO_THEME:" + picoTheme);
                 picoTheme = picoThemeStr.toLowerCase();
                 if (siteTitleStr == null) {
-                    throw new Exception("com.ssg.site.title not set in application.properties");
+                    throw new Exception("SITE_TITLE not set in ENVIRONMENT");
                 }
-                System.out.println("INFO: siteTheme: " + siteTitleStr);
+                System.out.println("INFO: SITE_TITLE: " + siteTitleStr);
                 siteTitle = siteTitleStr;
                 if (reloadAllFilesStr == null) {
-                    throw new Exception("com.ssg.reload not set in application.properties");
+                    throw new Exception("RELOAD not set in ENVIRONMENT");
                 }
-                System.out.println("INFO: reload:" + reloadAllFilesStr);
+                System.out.println("INFO: RELOAD:" + reloadAllFilesStr);
                 reloadAllFiles = reloadAllFilesStr.equals("true");
             }
         } catch (IOException e) {
