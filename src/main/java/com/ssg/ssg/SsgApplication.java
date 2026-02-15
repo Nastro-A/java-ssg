@@ -33,22 +33,27 @@ public class SsgApplication {
                 if (mdDirStr == null) {
                     throw new Exception("com.ssg.mddir not set in application.properties");
                 }
+                System.out.println("INFO: mdDir:" + mdDirStr);
                 mdDir = Path.of(mdDirStr);
                 if (htmlDirStr == null) {
                     throw new Exception("com.ssg.htmldir not set in application.properties");
                 }
+                System.out.println("INFO: htmlDir:" + htmlDir);
                 htmlDir = Path.of(htmlDirStr);
                 if (picoThemeStr == null) {
                     throw new Exception("com.ssg.htmldir not set in application.properties");
                 }
+                System.out.println("INFO: picoTheme:" + picoTheme);
                 picoTheme = picoThemeStr.toLowerCase();
                 if (siteTitleStr == null) {
                     throw new Exception("com.ssg.site.title not set in application.properties");
                 }
+                System.out.println("INFO: siteTheme: " + siteTitleStr);
                 siteTitle = siteTitleStr;
                 if (reloadAllFilesStr == null) {
                     throw new Exception("com.ssg.reload not set in application.properties");
                 }
+                System.out.println("INFO: reload:" + reloadAllFilesStr);
                 reloadAllFiles = reloadAllFilesStr.equals("true");
             }
         } catch (IOException e) {
