@@ -2,9 +2,7 @@ package com.ssg.ssg;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.util.PropertyPlaceholderHelper;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -24,47 +22,40 @@ public class SsgApplication {
     private static Boolean reloadAllFiles;
     static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        try (InputStream input = new FileInputStream("application.properties")) {
-            props.load(input);
-            var helper = new PropertyPlaceholderHelper("${", "}");
-            for (var name : props.stringPropertyNames()) {
-                var value = props.getProperty(name);
-                var resolvedValue = helper.replacePlaceholders(value, System::getProperty);
-                if (resolvedValue.equals(value)){
-                    resolvedValue = helper.replacePlaceholders(value, System::getenv);
+        try (InputStream input = SsgApplication.class.getClassLoader().getResourceAsStream("application.properties")) {
+            if (input != null) {
+                props.load(input);
+                String mdDirStr = props.getProperty("com.ssg.mddir");
+                String htmlDirStr = props.getProperty("com.ssg.htmldir");
+                String picoThemeStr = props.getProperty("com.ssg.pico.theme");
+                String siteTitleStr = props.getProperty("com.ssg.site.title");
+                String reloadAllFilesStr = props.getProperty("com.ssg.reload");
+                if (mdDirStr == null) {
+                    throw new Exception("com.ssg.mddir not set in application.properties");
                 }
-                props.setProperty(name, resolvedValue);
+                System.out.println("INFO: mdDir:" + mdDirStr);
+                mdDir = Path.of(mdDirStr);
+                if (htmlDirStr == null) {
+                    throw new Exception("com.ssg.htmldir not set in application.properties");
+                }
+                System.out.println("INFO: htmlDir:" + htmlDir);
+                htmlDir = Path.of(htmlDirStr);
+                if (picoThemeStr == null) {
+                    throw new Exception("com.ssg.htmldir not set in application.properties");
+                }
+                System.out.println("INFO: picoTheme:" + picoTheme);
+                picoTheme = picoThemeStr.toLowerCase();
+                if (siteTitleStr == null) {
+                    throw new Exception("com.ssg.site.title not set in application.properties");
+                }
+                System.out.println("INFO: siteTheme: " + siteTitleStr);
+                siteTitle = siteTitleStr;
+                if (reloadAllFilesStr == null) {
+                    throw new Exception("com.ssg.reload not set in application.properties");
+                }
+                System.out.println("INFO: reload:" + reloadAllFilesStr);
+                reloadAllFiles = reloadAllFilesStr.equals("true");
             }
-            String mdDirStr = props.getProperty("com.ssg.mddir");
-            String htmlDirStr = props.getProperty("com.ssg.htmldir");
-            String picoThemeStr = props.getProperty("com.ssg.pico.theme");
-            String siteTitleStr = props.getProperty("com.ssg.site.title");
-            String reloadAllFilesStr = props.getProperty("com.ssg.reload");
-            if (mdDirStr == null) {
-                throw new Exception("com.ssg.mddir not set in application.properties");
-            }
-            System.out.println("INFO: mdDir:" + mdDirStr);
-            mdDir = Path.of(mdDirStr);
-            if (htmlDirStr == null) {
-                throw new Exception("com.ssg.htmldir not set in application.properties");
-            }
-            System.out.println("INFO: htmlDir:" + htmlDir);
-            htmlDir = Path.of(htmlDirStr);
-            if (picoThemeStr == null) {
-                throw new Exception("com.ssg.htmldir not set in application.properties");
-            }
-            System.out.println("INFO: picoTheme:" + picoTheme);
-            picoTheme = picoThemeStr.toLowerCase();
-            if (siteTitleStr == null) {
-                throw new Exception("com.ssg.site.title not set in application.properties");
-            }
-            System.out.println("INFO: siteTheme: " + siteTitleStr);
-            siteTitle = siteTitleStr;
-            if (reloadAllFilesStr == null) {
-                throw new Exception("com.ssg.reload not set in application.properties");
-            }
-            System.out.println("INFO: reload:" + reloadAllFilesStr);
-            reloadAllFiles = reloadAllFilesStr.equals("true");
         } catch (IOException e) {
             System.out.println("Error: application.properties file not exists");
             System.exit(1);
