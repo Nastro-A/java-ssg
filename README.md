@@ -10,8 +10,13 @@ JDK 25
 # Docker/Podman Quadlets
 Image docker.io/nastroa/java-ssg
 
+## Environment variables to set:
+ - PICO_THEME
+ - SITE_TITLE
+ - RELOAD -> set it to false unless you need to reconvert all the md files
+
 Docker folder contains:
- - Dockerfile -> build the Java app, take the jar file in the target folder and the application.properties in src/main/resources, paste it in the Docker directory of the project and build
+ - Dockerfile -> build the Java app, take the jar file in the target folder, paste it in the Docker directory of the project and build
  - docker-compose.yaml
 ```shell
 docker compose run -d
