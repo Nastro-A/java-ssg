@@ -16,7 +16,8 @@ public class ConversionUtils {
 
     public static void convertIntoHtmlFile(MdFile mdFile, Path dirOut, String title, String theme) {
         try {
-            var fileLines = Files.readAllLines(Path.of(mdFile.filePath()));
+            Path mdPath = Path.of(mdFile.filePath());
+            var fileLines = Files.readAllLines(mdPath);
             if (fileLines.isEmpty()) {
                 throw new NoSuchFileException("Info: File " + mdFile.filePath() + " empty. Not converting.");
             }
@@ -70,10 +71,12 @@ public class ConversionUtils {
                                 """
                         , StandardOpenOption.APPEND);
             }
-            for (var line : fileLines) {
-                Node document = parser.parse(line);
-                Files.writeString(tmpFilePath, renderer.render(document), StandardOpenOption.APPEND);
+            String documentStr = new String(Files.readAllBytes(mdPath));
+            if (documentStr.isBlank()){
+                throw new NoSuchFileException(null);
             }
+            Node document = parser.parse(documentStr);
+            Files.writeString(tmpFilePath, renderer.render(document), StandardOpenOption.APPEND);
             Files.writeString(tmpFilePath, """
                     </body>
                         <footer>
